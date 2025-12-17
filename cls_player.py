@@ -6,6 +6,7 @@ class Player(pygame.sprite.Sprite):
 
         self.surface = None
         self.rect = None
+        self.speed = 5
 
     def update(self):
         pass

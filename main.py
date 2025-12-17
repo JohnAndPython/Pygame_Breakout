@@ -46,11 +46,11 @@ while True:
 
 
     if move_player_right:
-        rect.right += 5
+        rect.move_ip(5, 0)
         if rect.right >= SCREEN_WIDTH:
             rect.right = SCREEN_WIDTH
     elif move_player_left:
-        rect.left -= 5
+        rect.move_ip(-5, 0)
         if rect.left <= 0:
             rect.left = 0
 

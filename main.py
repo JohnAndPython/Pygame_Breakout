@@ -4,6 +4,7 @@ import sys
 
 from cls_block import Block
 from cls_paddle import Paddle
+from cls_ball import Ball
 
 pygame.init()
 
@@ -19,6 +20,9 @@ prev_time = time.time()
 paddle = Paddle()
 paddle.rect.centerx = SCREEN_WIDTH // 2
 paddle.rect.bottom = SCREEN_HEIGHT - 2 * paddle.rect.height
+
+ball = Ball
+
 
 
 while True:

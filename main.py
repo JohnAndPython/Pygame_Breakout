@@ -21,7 +21,7 @@ paddle = Paddle()
 paddle.rect.centerx = SCREEN_WIDTH // 2
 paddle.rect.bottom = SCREEN_HEIGHT - 2 * paddle.rect.height
 
-ball = Ball
+ball_01 = Ball
 
 
 

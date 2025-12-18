@@ -8,7 +8,8 @@ class Ball(pygame.sprite.Sprite):
         self.surface.fill((255, 100, 100))
         self.rect = self.surface.get_rect()
 
-        self.speed = 0
+        self.speed_x = 0
+        self.speed_y = 0
         self.direction_x = 0
         self.direction_y = 0
 

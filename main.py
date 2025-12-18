@@ -41,17 +41,21 @@ vector = pygame.Vector2()
 ball = Ball()
 ball.rect.centerx = paddle.rect.centerx
 ball.rect.bottom = paddle.rect.top
-ball.speed_x = 100
-ball.speed_y = 100
+ball.speed = 100
 ball.direction_x = -1
 ball.direction_y = -1
 
-ball_angle = radians(random.randint(30, 60))
+ball_angle = radians(random.randint(30, 150))
 
-ball.speed_x *= cos(ball_angle)
-ball.speed_y *= sin(ball_angle)
+ball.direction_x = cos(ball_angle)
+ball.direction_y = -sin(ball_angle)
 
-print(ball.speed_x, ball.speed_y)
+print(cos(ball_angle), -sin(ball_angle))
+
+print(cos(radians(30)), cos(radians(60)))
+print(sin(radians(30)), sin(radians(60)))
+
+
 
 
 while True:
@@ -87,26 +91,22 @@ while True:
         if paddle.rect.left <= 0:
             paddle.rect.left = 0
 
-    ball.rect.move_ip(ball.speed_x * ball.direction_x * dt, ball.speed_y * ball.direction_y * dt)
+
+    ball.rect.move_ip(ball.speed * ball.direction_x * dt, ball.speed * ball.direction_y * dt)
 
     if ball.rect.right >= SCREEN_WIDTH or ball.rect.left <= 0:
         ball.direction_x *= -1
 
-        ball_angle = radians(random.randint(30, 60))
 
-        ball.speed_x = abs(ball.speed_x) * cos(ball_angle) * (1 if ball.direction_x > 0 else -1)
-        ball.speed_y = abs(ball.speed_y) * sin(ball_angle) * (1 if ball.direction_y > 0 else -1)
 
-        print(ball.speed_x, ball.speed_y, ball_angle)
     if ball.rect.top <= 0 or ball.rect.bottom >= SCREEN_HEIGHT:
         ball.direction_y *= -1
 
-        ball_angle = radians(random.randint(30, 60))
 
-        ball.speed_x = abs(ball.speed_x) * cos(ball_angle) * (1 if ball.direction_x > 0 else -1)
-        ball.speed_y = abs(ball.speed_y) * sin(ball_angle) * (1 if ball.direction_y > 0 else -1)
 
-        print(ball.speed_x, ball.speed_y, ball_angle)
+
+
+    
 
 
     # Draw objects on screen

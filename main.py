@@ -20,8 +20,14 @@ prev_time = time.time()
 paddle = Paddle()
 paddle.rect.centerx = SCREEN_WIDTH // 2
 paddle.rect.bottom = SCREEN_HEIGHT - 2 * paddle.rect.height
+paddle.speed = 500
 
-ball_01 = Ball
+ball = Ball()
+ball.rect.centerx = paddle.rect.centerx
+ball.rect.bottom = paddle.rect.top
+ball.speed = 300
+ball.direction_x = -1
+ball.direction_y = -1
 
 
 
@@ -50,17 +56,26 @@ while True:
 
 
     if paddle.move_right:
-        paddle.rect.move_ip(5, 0)
+        paddle.rect.move_ip(paddle.speed * dt, 0)
         if paddle.rect.right >= SCREEN_WIDTH:
             paddle.rect.right = SCREEN_WIDTH
     elif paddle.move_left:
-        paddle.rect.move_ip(-5, 0)
+        paddle.rect.move_ip(-paddle.speed * dt, 0)
         if paddle.rect.left <= 0:
             paddle.rect.left = 0
+
+    ball.rect.move_ip(ball.speed * ball.direction_x * dt, ball.speed * ball.direction_y * dt)
+
+    if ball.rect.right >= SCREEN_WIDTH or ball.rect.left <= 0:
+        ball.direction_x *= -1
+    if ball.rect.top <= 0 or ball.rect.bottom >= SCREEN_HEIGHT:
+        ball.direction_y *= -1
+
 
     
     screen.fill((255,255,255))
     paddle.draw(screen)
+    ball.draw(screen)
     
 
     #update display

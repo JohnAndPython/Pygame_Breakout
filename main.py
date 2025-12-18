@@ -3,7 +3,7 @@ import time
 import sys
 
 from cls_block import Block
-from cls_player import Player
+from cls_paddle import Paddle
 
 pygame.init()
 
@@ -16,11 +16,10 @@ clock = pygame.time.Clock()
 prev_time = time.time()
 
 #game variables
-move_player_left = False
-move_player_right = False
+paddle = Paddle()
+paddle.rect.centerx = SCREEN_WIDTH // 2
+paddle.rect.bottom = SCREEN_HEIGHT - 2 * paddle.rect.height
 
-
-rect = pygame.Rect(100, 100, 100, 20)
 
 while True:
     #delta time |alternative: dt = clock.tick(60) / 1000
@@ -32,31 +31,32 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                move_player_left = True
+                paddle.move_left = True
             elif event.key == pygame.K_RIGHT:
-                move_player_right = True
+                paddle.move_right = True
 
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
-                move_player_left = False
+                paddle.move_left = False
             elif event.key == pygame.K_RIGHT:
-                move_player_right = False
+                paddle.move_right = False
 
 
-    if move_player_right:
-        rect.move_ip(5, 0)
-        if rect.right >= SCREEN_WIDTH:
-            rect.right = SCREEN_WIDTH
-    elif move_player_left:
-        rect.move_ip(-5, 0)
-        if rect.left <= 0:
-            rect.left = 0
+    if paddle.move_right:
+        paddle.rect.move_ip(5, 0)
+        if paddle.rect.right >= SCREEN_WIDTH:
+            paddle.rect.right = SCREEN_WIDTH
+    elif paddle.move_left:
+        paddle.rect.move_ip(-5, 0)
+        if paddle.rect.left <= 0:
+            paddle.rect.left = 0
 
     
     screen.fill((255,255,255))
-    pygame.draw.rect(screen, (0, 0, 0), rect)
+    paddle.draw(screen)
     
 
     #update display

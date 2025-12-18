@@ -10,7 +10,7 @@ class Paddle(pygame.sprite.Sprite):
 
         self.move_right = False
         self.move_left = False
-        self.speed = 5
+        self.speed = 0
 
     def update(self):
         pass

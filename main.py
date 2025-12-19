@@ -91,7 +91,7 @@ while True:
     dt = time.time() - prev_time
     prev_time = time.time()
     
-    pygame.display.set_caption(f"{clock.get_fps():.2f}")
+    pygame.display.set_caption(f"Breakout {clock.get_fps():.2f}")
 
     #event loop
     for event in pygame.event.get():
@@ -166,14 +166,23 @@ while True:
     # Update
     paddle.update(dt, 0, SCREEN_WIDTH)
     ball.rect.move_ip(ball.speed * abs(cos(ball_angle)) * ball.direction_x * dt, ball.speed * sin(ball_angle) * ball.direction_y * dt)
-    level_group.update(ball.rect)
+    #level_group.update(ball.rect)
+    # print(len(level_group))
     
-    # a = pygame.sprite.spritecollide(ball, level_group, dokill=False)
+    a = pygame.sprite.spritecollide(ball, level_group, dokill=True)
+    if a:
+        print(a)
+        # for item in a:
+        #     print(item.rect, item.color)
+
+    # print(sys.getsizeof(level_group))
     # for item in a:
     #     print(item)
-    #a = pygame.sprite.spritecollideany(ball, level_group)
+    # a = pygame.sprite.spritecollideany(ball, level_group)
+    
     # if a:
     #     print(a)
+        
     # if not level_group:
     #     print("Game Over")
     

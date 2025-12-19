@@ -15,5 +15,6 @@ class Block(pygame.sprite.Sprite):
         self.rect.left = left
         self.rect.top = top
 
-    def update(self) -> None:
-        pass
+    def update(self, rect: pygame.Rect) -> None:
+        if self.rect.colliderect(rect):
+            self.kill()

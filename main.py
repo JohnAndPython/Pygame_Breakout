@@ -1,7 +1,7 @@
 import pygame
 import time
 import sys
-from math import sin, cos, radians
+from math import sin, cos, radians, sqrt
 import random
 
 from cls_block import Block
@@ -41,20 +41,20 @@ vector = pygame.Vector2()
 ball = Ball()
 ball.rect.centerx = paddle.rect.centerx
 ball.rect.bottom = paddle.rect.top
-ball.speed = 100
+ball.speed = 600
 ball.direction_x = -1
 ball.direction_y = -1
+ball_can_collide = True
 
 ball_angle = radians(random.randint(30, 150))
+print(ball_angle, ball.rect.centerx, ball.rect.centery)
 
-ball.direction_x = cos(ball_angle)
-ball.direction_y = -sin(ball_angle)
 
-print(cos(ball_angle), -sin(ball_angle))
-
-print(cos(radians(30)), cos(radians(60)))
-print(sin(radians(30)), sin(radians(60)))
-
+x = (ball.speed * abs(cos(ball_angle)))
+y = (ball.speed * sin(ball_angle))
+length = sqrt(x**2 + y**2)
+new_x = x / length
+new_y = y / length
 
 
 
@@ -92,20 +92,58 @@ while True:
             paddle.rect.left = 0
 
 
-    ball.rect.move_ip(ball.speed * ball.direction_x * dt, ball.speed * ball.direction_y * dt)
+    
 
     if ball.rect.right >= SCREEN_WIDTH or ball.rect.left <= 0:
         ball.direction_x *= -1
+        ball_angle = radians(random.randint(30, 60))
+        print(ball_angle, ball_angle * ball.speed, sin(ball_angle), ball.speed * sin(ball_angle), abs(cos(ball_angle)), ball.speed * abs(cos(ball_angle)))
 
+        x = (ball.speed * abs(cos(ball_angle)))
+        y = (ball.speed * sin(ball_angle))
+        new_x = x / ball.speed
+        new_y = y / ball.speed
 
+        if ball.rect.right >= SCREEN_WIDTH:
+            ball.rect.right = SCREEN_WIDTH - 1
+
+        elif ball.rect.left <= 0:
+            ball.rect.left = 1
 
     if ball.rect.top <= 0 or ball.rect.bottom >= SCREEN_HEIGHT:
         ball.direction_y *= -1
+        ball_angle = radians(random.randint(30, 60))
+        print(ball_angle, ball_angle * ball.speed, sin(ball_angle), ball.speed * sin(ball_angle), abs(cos(ball_angle)), ball.speed * abs(cos(ball_angle)))
+
+        x = (ball.speed * abs(cos(ball_angle)))
+        y = (ball.speed * sin(ball_angle))
+        new_x = x / ball.speed
+        new_y = y / ball.speed
+
+        if ball.rect.top <= 0:
+            ball.rect.top = 1
+        
+        elif ball.rect.bottom >= SCREEN_HEIGHT:
+            ball.rect.bottom = SCREEN_HEIGHT - 1
+
+    if ball.rect.colliderect(paddle.rect):
+        ball.direction_y *= -1
+        ball_angle = radians(random.randint(30, 60))
+        
+
+        x = (ball.speed * abs(cos(ball_angle)))
+        y = (ball.speed * sin(ball_angle))
+        new_x = x / ball.speed
+        new_y = y / ball.speed
 
 
 
+    ball.rect.move_ip(ball.speed * abs(cos(ball_angle)) * ball.direction_x * dt, ball.speed * sin(ball_angle) * ball.direction_y * dt)
+
+    
 
 
+    
     
 
 
@@ -113,6 +151,7 @@ while True:
     screen.fill((255,255,255))
     paddle.draw(screen)
     ball.draw(screen)
+    pygame.draw.line(screen, (0, 0, 200), (ball.rect.centerx, ball.rect.centery), (ball.rect.centerx + new_x * 100 * ball.direction_x, ball.rect.centery + new_y * 100 * ball.direction_y))
     
 
     #update display

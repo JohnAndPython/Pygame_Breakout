@@ -11,13 +11,17 @@ from cls_ball import Ball
 pygame.init()
 
 
-def random_angle_between(min_degree, max_degree, x_value, y_value) -> tuple:
+def random_angle_between(min_degree: int, max_degree: int) -> float:
     angle = radians(random.randint(min_degree, max_degree))
 
-    x_value *= cos(angle)
-    y_value *= sin(angle)
+    return angle
 
-    return (x_value, y_value)
+def x_and_y_components(length, angle) -> tuple[float]:
+    x_length = (ball.speed * cos(ball_angle))
+    y_length = (ball.speed * sin(ball_angle))
+
+    return (x_length, y_length)
+
 
 
 
@@ -35,26 +39,18 @@ paddle.rect.centerx = SCREEN_WIDTH // 2
 paddle.rect.bottom = SCREEN_HEIGHT - 2 * paddle.rect.height
 paddle.speed = 500
 
-vector = pygame.Vector2()
-
-
 ball = Ball()
 ball.rect.centerx = paddle.rect.centerx
 ball.rect.bottom = paddle.rect.top
-ball.speed = 600
+ball.speed = 300
 ball.direction_x = -1
 ball.direction_y = -1
 ball_can_collide = True
 
-ball_angle = radians(random.randint(30, 150))
-print(ball_angle, ball.rect.centerx, ball.rect.centery)
+ball_angle = random_angle_between(30, 150)
+x, y = x_and_y_components(ball.speed, ball_angle) 
+new_x, new_y = abs(x) / ball.speed, y / ball.speed
 
-
-x = (ball.speed * abs(cos(ball_angle)))
-y = (ball.speed * sin(ball_angle))
-length = sqrt(x**2 + y**2)
-new_x = x / length
-new_y = y / length
 
 
 
@@ -86,12 +82,9 @@ while True:
 
     if ball.rect.right >= SCREEN_WIDTH or ball.rect.left <= 0:
         ball.direction_x *= -1
-        ball_angle = radians(random.randint(30, 60))
-
-        x = (ball.speed * abs(cos(ball_angle)))
-        y = (ball.speed * sin(ball_angle))
-        new_x = x / ball.speed
-        new_y = y / ball.speed
+        ball_angle = random_angle_between(30, 60)
+        x, y = x_and_y_components(ball.speed, ball_angle) 
+        new_x, new_y = abs(x) / ball.speed, y / ball.speed
 
         if ball.rect.right >= SCREEN_WIDTH:
             ball.rect.right = SCREEN_WIDTH - 1
@@ -101,12 +94,9 @@ while True:
 
     if ball.rect.top <= 0 or ball.rect.bottom >= SCREEN_HEIGHT:
         ball.direction_y *= -1
-        ball_angle = radians(random.randint(30, 60))
-
-        x = (ball.speed * abs(cos(ball_angle)))
-        y = (ball.speed * sin(ball_angle))
-        new_x = x / ball.speed
-        new_y = y / ball.speed
+        ball_angle = random_angle_between(30, 60)
+        x, y = x_and_y_components(ball.speed, ball_angle) 
+        new_x, new_y = abs(x) / ball.speed, y / ball.speed
 
         if ball.rect.top <= 0:
             ball.rect.top = 1
@@ -114,19 +104,29 @@ while True:
         elif ball.rect.bottom >= SCREEN_HEIGHT:
             ball.rect.bottom = SCREEN_HEIGHT - 1
 
-    if ball.rect.colliderect(paddle.rect):
-        ball.direction_y *= -1
-        ball_angle = radians(random.randint(30, 60))
-        
+    # if ball.rect.colliderect(paddle.rect):
+    #     ball.direction_y *= -1
+    #     ball_angle = random_angle_between(30, 60)
+    #     x, y = x_and_y_components(ball.speed, ball_angle) 
+    #     new_x, new_y = abs(x) / ball.speed, y / ball.speed
 
-        x = (ball.speed * abs(cos(ball_angle)))
-        y = (ball.speed * sin(ball_angle))
-        new_x = x / ball.speed
-        new_y = y / ball.speed
+    if ball.rect.colliderect(paddle.small_rect_left):
+        ball.direction_x = -1
+        ball.direction_y = -1
 
-    
+        ball_angle = random_angle_between(30, 60)
+        x, y = x_and_y_components(ball.speed, ball_angle) 
+        new_x, new_y = abs(x) / ball.speed, y / ball.speed
 
-    
+    if ball.rect.colliderect(paddle.small_rect_right):
+        ball.direction_x = 1
+        ball.direction_y = -1
+
+        ball_angle = random_angle_between(30, 60)
+        x, y = x_and_y_components(ball.speed, ball_angle) 
+        new_x, new_y = abs(x) / ball.speed, y / ball.speed
+
+
 
     #print(ball.rect.bottom, paddle.rect.bottom)
     #print(ball.rect.colliderect(paddle.rect), ball.rect.bottom <= paddle.rect.top)
@@ -146,7 +146,7 @@ while True:
     paddle.draw(screen)
     ball.draw(screen)
     pygame.draw.line(screen, (0, 0, 200), (ball.rect.centerx, ball.rect.centery), (ball.rect.centerx + new_x * 100 * ball.direction_x, ball.rect.centery + new_y * 100 * ball.direction_y))
-    
+
 
     #update display
     pygame.display.update()

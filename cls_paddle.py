@@ -12,9 +12,15 @@ class Paddle(pygame.sprite.Sprite):
         self.move_left = False
         self.speed = 0
 
-    def update(self):
-        pass
-        #return super().update(*args, **kwargs)
+    def update(self, dt, border_left: int, border_right: int):
+        if self.move_right:
+            self.rect.move_ip(self.speed * dt, 0)
+            if self.rect.right >= border_right:
+                self.rect.right = border_right
+        elif self.move_left:
+            self.rect.move_ip(-self.speed * dt, 0)
+            if self.rect.left <= border_left:
+                self.rect.left = border_left
     
     def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self.surface, self.rect)

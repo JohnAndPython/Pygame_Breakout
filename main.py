@@ -58,10 +58,11 @@ cur_level = levels.level_001
 row_elements = len(cur_level[0])
 offset = 4
 
+place_left = SCREEN_WIDTH // row_elements
 width_brick = SCREEN_WIDTH // row_elements - offset * 2
 height_brick = 20
 
-left_brick = offset
+left_brick = offset * 2
 top_brick = 50
 
 level_group = pygame.sprite.Group()
@@ -74,12 +75,12 @@ for row in cur_level:
         if item != 0:
             block = Block(left_brick, top_brick, width_brick, height_brick, rand_color)
             level_group.add(block)
-            left_brick += width_brick + offset
+            left_brick += place_left
+            
         else:
-            left_brick += width_brick + offset
+            left_brick += place_left
 
-
-    left_brick = offset
+    left_brick = offset * 2
     top_brick += height_brick + offset
 
 
@@ -165,6 +166,17 @@ while True:
     # Update
     paddle.update(dt, 0, SCREEN_WIDTH)
     ball.rect.move_ip(ball.speed * abs(cos(ball_angle)) * ball.direction_x * dt, ball.speed * sin(ball_angle) * ball.direction_y * dt)
+    level_group.update(ball.rect)
+    
+    # a = pygame.sprite.spritecollide(ball, level_group, dokill=False)
+    # for item in a:
+    #     print(item)
+    #a = pygame.sprite.spritecollideany(ball, level_group)
+    # if a:
+    #     print(a)
+    # if not level_group:
+    #     print("Game Over")
+    
 
     
     # Draw objects on screen

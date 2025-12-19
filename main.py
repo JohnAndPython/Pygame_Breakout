@@ -82,22 +82,11 @@ while True:
                 paddle.move_right = False
 
     # Game Logic
-    if paddle.move_right:
-        paddle.rect.move_ip(paddle.speed * dt, 0)
-        if paddle.rect.right >= SCREEN_WIDTH:
-            paddle.rect.right = SCREEN_WIDTH
-    elif paddle.move_left:
-        paddle.rect.move_ip(-paddle.speed * dt, 0)
-        if paddle.rect.left <= 0:
-            paddle.rect.left = 0
-
-
     
 
     if ball.rect.right >= SCREEN_WIDTH or ball.rect.left <= 0:
         ball.direction_x *= -1
         ball_angle = radians(random.randint(30, 60))
-        print(ball_angle, ball_angle * ball.speed, sin(ball_angle), ball.speed * sin(ball_angle), abs(cos(ball_angle)), ball.speed * abs(cos(ball_angle)))
 
         x = (ball.speed * abs(cos(ball_angle)))
         y = (ball.speed * sin(ball_angle))
@@ -113,7 +102,6 @@ while True:
     if ball.rect.top <= 0 or ball.rect.bottom >= SCREEN_HEIGHT:
         ball.direction_y *= -1
         ball_angle = radians(random.randint(30, 60))
-        print(ball_angle, ball_angle * ball.speed, sin(ball_angle), ball.speed * sin(ball_angle), abs(cos(ball_angle)), ball.speed * abs(cos(ball_angle)))
 
         x = (ball.speed * abs(cos(ball_angle)))
         y = (ball.speed * sin(ball_angle))
@@ -136,8 +124,14 @@ while True:
         new_x = x / ball.speed
         new_y = y / ball.speed
 
+    
 
+    
 
+    #print(ball.rect.bottom, paddle.rect.bottom)
+    #print(ball.rect.colliderect(paddle.rect), ball.rect.bottom <= paddle.rect.top)
+
+    paddle.update(dt, 0, SCREEN_WIDTH)
     ball.rect.move_ip(ball.speed * abs(cos(ball_angle)) * ball.direction_x * dt, ball.speed * sin(ball_angle) * ball.direction_y * dt)
 
     
